@@ -26,6 +26,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "ci:version": "pnpm version",
     "ci:publish": "pnpm publish -r"
   },
   "license": "MIT",
