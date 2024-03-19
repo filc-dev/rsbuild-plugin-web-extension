@@ -17,6 +17,7 @@ export const pluginWebExtension = (): RsbuildPlugin => ({
     /**
      * @todo refactor with html-bundler-webpack-plugin
      * @issue https://github.com/web-infra-dev/rspack/issues/5971
+     * @ref https://github.com/webdiscus/html-bundler-webpack-plugin
      */
     const entry = htmlEntryPoints.reduce(
       (acc, [name, entry]) => ({
