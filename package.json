@@ -1,0 +1,42 @@
+{
+  "name": "rsbuild-plugin-web-extension",
+  "description": "",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "rsbuild",
+    "plugin",
+    "web-extension",
+    "chrome-extension",
+    "firefox-extension"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@rsbuild/core": "^0.5.1",
+    "@types/chrome": "^0.0.263",
+    "@types/node": "^20.11.30",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.2"
+  },
+  "peerDependencies": {
+    "@rsbuild/core": "0.x"
+  }
+}
