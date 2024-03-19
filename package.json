@@ -25,11 +25,13 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "ci:publish": "pnpm publish -r"
   },
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@rsbuild/core": "^0.5.1",
     "@types/chrome": "^0.0.263",
     "@types/node": "^20.11.30",
