@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.3
+
+### Patch Changes
+
+- 67d2d7a: remove auto get manifest
+
 ## 0.0.2
 
 ### Patch Changes
