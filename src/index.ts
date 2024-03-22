@@ -1,12 +1,12 @@
 import { type RsbuildPlugin } from "@rsbuild/core";
 import { makeManifest } from "./manifest/make-manifest.js";
-import { getManifest } from "./manifest/get-manifest.js";
 
-export const pluginWebExtension = (): RsbuildPlugin => ({
+interface Options {
+  manifest: chrome.runtime.ManifestV3;
+}
+export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
   name: "rsbuild:plugin-web-extension",
   setup: async (api) => {
-    const { default: manifest } = await getManifest(api);
-
     const htmlEntryPoints = Object.entries({
       popup: manifest.action?.default_popup,
       devtools: manifest.devtools_page,
