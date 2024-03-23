@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.4
+
+### Patch Changes
+
+- fbb29fa: fix not found background js
+
 ## 0.0.3
 
 ### Patch Changes
