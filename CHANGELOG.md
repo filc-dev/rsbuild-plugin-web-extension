@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.5
+
+### Patch Changes
+
+- 0b55bcd: Add support for content_scripts in pluginWebExtension
+
 ## 0.0.4
 
 ### Patch Changes
