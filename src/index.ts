@@ -52,6 +52,9 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
         },
         output: {
           filenameHash: false,
+          filename: {
+            js: "index.js",
+          },
           distPath: {
             js: "src/[name]",
           },
