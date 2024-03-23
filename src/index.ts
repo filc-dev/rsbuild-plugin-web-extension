@@ -80,6 +80,7 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
         source: {
           entry: {
             ...entry,
+            ...contentScriptsEntry,
             background: manifest.background?.service_worker || "",
           },
         },
