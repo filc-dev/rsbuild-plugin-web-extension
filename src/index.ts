@@ -27,6 +27,39 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
       {}
     );
 
+    const contentScripts = manifest.content_scripts?.map((script) => {
+      if (!script.js) {
+        return;
+      }
+      if (script.js.length > 1) {
+        throw new Error(
+          `Multiple scripts are not supported for content_scripts not yet: ${script.js}` // TODO: support multiple scripts
+        );
+      }
+      if (!/index\.(js|ts|tsx)$/.test(script.js[0].split("/").pop()!)) {
+        throw new Error(
+          `Support only index.(js|ts|tsx) is supported for content_scripts yet: ${script.js}` // TODO: support file name to entry name
+        );
+      }
+
+      const entryName = script.js[0]
+        .split("/")
+        .pop()!
+        .replace(/\.(js|ts|tsx)$/, "");
+
+      return {
+        [entryName]: script.js[0],
+      };
+    });
+
+    const contentScriptsEntry = contentScripts?.reduce(
+      (acc, scripts) => ({
+        ...acc,
+        ...scripts,
+      }),
+      {}
+    );
+
     api.modifyRspackConfig((config, { mergeConfig, HtmlPlugin }) => {
       return mergeConfig(config, {
         plugins: htmlEntryPoints.map(([name, template]) => {
