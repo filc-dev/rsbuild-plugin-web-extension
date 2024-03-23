@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.6
+
+### Patch Changes
+
+- 4f2692e: Add content scripts entry
+
 ## 0.0.5
 
 ### Patch Changes
