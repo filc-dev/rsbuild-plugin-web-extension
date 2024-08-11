@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.7
+
+### Patch Changes
+
+- b683b5b: 0.0.7
+
 ## 0.0.6
 
 ### Patch Changes
