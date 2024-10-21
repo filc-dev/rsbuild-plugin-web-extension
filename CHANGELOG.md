@@ -1,5 +1,11 @@
 # rsbuild-plugin-web-extension
 
+## 0.0.8
+
+### Patch Changes
+
+- 3ccab83: chore: add homepage to package.json
+
 ## 0.0.7
 
 ### Patch Changes
