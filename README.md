@@ -32,3 +32,7 @@ export default defineConfig({
   ],
 });
 ```
+
+## Examples
+
+- [rsbuild-chrome-extension-boilerplate-react](https://github.com/filc-dev/rsbuild-chrome-extension-boilerplate-react)
