@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "packages/**"
 env:
   STORE_PATH: ~/.pnpm-store
   CI: true
