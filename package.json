@@ -6,10 +6,11 @@
     "preview:docs": "pnpm --filter docs preview",
     "dev:plugin": "pnpm --filter rsbuild-plugin-web-extension dev",
     "build:plugin": "pnpm --filter rsbuild-plugin-web-extension build",
-    "ci:version:plugin": "pnpm --filter rsbuild-plugin-web-extension ci:version",
-    "ci:publish:plugin": "pnpm --filter rsbuild-plugin-web-extension ci:publish"
+    "ci:version": "pnpm changeset version",
+    "ci:publish": "pnpm publish -r"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@biomejs/biome": "1.6.1"
   }
 }

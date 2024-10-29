@@ -32,7 +32,6 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
-    "@changesets/cli": "^2.27.1",
     "@rsbuild/core": "^1.0.16",
     "@types/chrome": "^0.0.263",
     "@types/node": "^20.11.30",
