@@ -1,47 +1,12 @@
 {
-  "name": "rsbuild-plugin-web-extension",
-  "description": "rsbuild plugin for chrome/web extension",
-  "homepage": "https://github.com/filc-dev/rsbuild-plugin-web-extension",
-  "version": "0.0.10",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "rsbuild",
-    "plugin",
-    "web-extension",
-    "chrome-extension",
-    "firefox-extension"
-  ],
+  "description": "rsbuild plugin for chrome extension",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "ci:version": "pnpm changeset version",
-    "ci:publish": "pnpm publish -r"
+    "dev:plugin": "pnpm --filter rsbuild-plugin-web-extension dev",
+    "build:plugin": "pnpm --filter rsbuild-plugin-web-extension build",
+    "ci:version:plugin": "pnpm --filter rsbuild-plugin-web-extension ci:version",
+    "ci:publish:plugin": "pnpm --filter rsbuild-plugin-web-extension ci:publish"
   },
-  "license": "MIT",
-  "type": "module",
   "devDependencies": {
-    "@biomejs/biome": "1.6.1",
-    "@changesets/cli": "^2.27.1",
-    "@rsbuild/core": "^1.0.16",
-    "@types/chrome": "^0.0.263",
-    "@types/node": "^20.11.30",
-    "tsup": "^8.0.2",
-    "typescript": "^5.4.2"
-  },
-  "peerDependencies": {
-    "@rsbuild/core": "1.x"
+    "@biomejs/biome": "1.6.1"
   }
 }

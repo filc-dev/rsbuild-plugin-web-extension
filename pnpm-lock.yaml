@@ -4,28 +4,39 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-devDependencies:
-  '@biomejs/biome':
-    specifier: 1.6.1
-    version: 1.6.1
-  '@changesets/cli':
-    specifier: ^2.27.1
-    version: 2.27.9
-  '@rsbuild/core':
-    specifier: ^1.0.16
-    version: 1.0.16
-  '@types/chrome':
-    specifier: ^0.0.263
-    version: 0.0.263
-  '@types/node':
-    specifier: ^20.11.30
-    version: 20.16.13
-  tsup:
-    specifier: ^8.0.2
-    version: 8.3.0(typescript@5.6.3)
-  typescript:
-    specifier: ^5.4.2
-    version: 5.6.3
+importers:
+
+  .:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.6.1
+        version: 1.6.1
+
+  docs: {}
+
+  packages/rsbuild-plugin-web-extension:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.6.1
+        version: 1.6.1
+      '@changesets/cli':
+        specifier: ^2.27.1
+        version: 2.27.9
+      '@rsbuild/core':
+        specifier: ^1.0.16
+        version: 1.0.16
+      '@types/chrome':
+        specifier: ^0.0.263
+        version: 0.0.263
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.16.13
+      tsup:
+        specifier: ^8.0.2
+        version: 8.3.0(typescript@5.6.3)
+      typescript:
+        specifier: ^5.4.2
+        version: 5.6.3
 
 packages:
 
