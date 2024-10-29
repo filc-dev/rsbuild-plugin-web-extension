@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: build
-        run: pnpm build
+        run: pnpm build:plugin
 
       - name: create and publish versions
         uses: changesets/action@v1
