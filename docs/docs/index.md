@@ -4,7 +4,7 @@ pageType: home
 hero:
   name: rsbuild-plugin-web-extension
   text: rbsuild plugin for chrome/web extension
-  tagline: rsbuild-plugin-web-extension tagline
+  tagline: docs is WIP
   actions:
     - theme: brand
       text: Quick Start
