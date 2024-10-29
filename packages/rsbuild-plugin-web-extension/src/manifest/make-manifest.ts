@@ -18,5 +18,5 @@ export const makeManifest = async (
     ManifestParser.convertManifestToString(manifest.default)
   );
 
-  logger.log(`Manifest file created`);
+  logger.log("Manifest file created");
 };
