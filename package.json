@@ -1,6 +1,9 @@
 {
   "description": "rsbuild plugin for chrome extension",
   "scripts": {
+    "dev:docs": "pnpm --filter docs dev",
+    "build:docs": "pnpm --filter docs build",
+    "preview:docs": "pnpm --filter docs preview",
     "dev:plugin": "pnpm --filter rsbuild-plugin-web-extension dev",
     "build:plugin": "pnpm --filter rsbuild-plugin-web-extension build",
     "ci:version:plugin": "pnpm --filter rsbuild-plugin-web-extension ci:version",
