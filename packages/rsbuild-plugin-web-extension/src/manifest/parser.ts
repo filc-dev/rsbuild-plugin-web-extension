@@ -9,9 +9,10 @@ const getOutputFile = (file: string): string => {
 class ManifestParser {
   private constructor() {}
 
-  static convertManifestToString(manifest: Manifest): string {
+  static convertManifestToString(_manifest: Manifest): string {
+    let manifest = { ..._manifest };
     if (process.env.__FIREFOX__) {
-      manifest = this.convertToFirefoxCompatibleManifest(manifest);
+      manifest = ManifestParser.convertToFirefoxCompatibleManifest(manifest);
     }
 
     return getOutputFile(JSON.stringify(manifest, null, 2));
@@ -34,7 +35,9 @@ class ManifestParser {
     manifestCopy.content_security_policy = {
       extension_pages: "script-src 'self'; object-src 'self'",
     };
-    delete manifestCopy.options_page;
+
+    manifestCopy.options_page = undefined;
+
     return manifestCopy as Manifest;
   }
 }
