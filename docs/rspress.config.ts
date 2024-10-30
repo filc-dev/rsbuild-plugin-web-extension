@@ -5,17 +5,16 @@ export default defineConfig({
   root: path.join(__dirname, "docs"),
   title: "rsbuild-plugin-web-extension",
   description: "rbsuild plugin for chrome/web extension",
-  icon: "/rspress-icon.png",
   logo: {
-    light: "/rspress-light-logo.png",
-    dark: "/rspress-dark-logo.png",
+    light: "/logo-black.png",
+    dark: "/logo-white.png",
   },
   themeConfig: {
     socialLinks: [
       {
         icon: "github",
         mode: "link",
-        content: "https://github.com/web-infra-dev/rspress",
+        content: "https://github.com/filc-dev/rsbuild-plugin-web-extension",
       },
     ],
   },
