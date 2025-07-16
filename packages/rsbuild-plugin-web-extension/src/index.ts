@@ -1,13 +1,30 @@
-import type { RsbuildPlugin } from "@rsbuild/core";
-import { makeManifest } from "./manifest/make-manifest.js";
+import * as fs from "node:fs";
+import path from "node:path";
+import { type RsbuildPlugin, rspack } from "@rsbuild/core";
+import { createJiti } from "jiti";
+import ManifestParser from "./manifest/parser.js";
 
 interface Options {
-  manifest: chrome.runtime.ManifestV3;
+  manifestPath: string;
 }
 
-export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
-  name: "rsbuild:plugin-web-extension",
+const pluginName = "rsbuild:plugin-web-extension";
+
+export const pluginWebExtension = ({
+  manifestPath,
+}: Options): RsbuildPlugin => ({
+  name: pluginName,
   setup: async (api) => {
+    const jiti = createJiti(api.context.rootPath, { moduleCache: false });
+
+    const manifestSourcePath = path.resolve(api.context.rootPath, manifestPath);
+    if (!fs.existsSync(manifestSourcePath)) {
+      throw new Error(`${pluginName}: Failed to read ${manifestSourcePath}`);
+    }
+
+    const manifestModule = jiti(manifestSourcePath);
+    const manifest = manifestModule.default || manifestModule.manifest;
+
     const htmlEntryPoints = Object.entries({
       popup: manifest.action?.default_popup,
       devtools: manifest.devtools_page,
@@ -60,13 +77,39 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
           },
         },
         dev: {
-          writeToDisk: true
-        }
+          writeToDisk: true,
+        },
       });
     });
 
-    api.onAfterBuild(() => {
-      makeManifest(manifest, api.context.distPath);
+    api.onAfterCreateCompiler(({ compiler }) => {
+      if (!(compiler instanceof rspack.Compiler)) {
+        return;
+      }
+
+      compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
+        compilation.hooks.processAssets.tap(
+          {
+            name: pluginName,
+            stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+          },
+          () => {
+            compilation.fileDependencies.add(manifestSourcePath);
+
+            const updatedManifestModule = jiti(manifestPath);
+            const manifest =
+              updatedManifestModule.default || updatedManifestModule.manifest;
+            const content = ManifestParser.convertManifestToString(manifest);
+
+            const { RawSource } = compiler.webpack.sources;
+
+            const source = new RawSource(content);
+            const outputFilename = "manifest.json";
+
+            compilation.emitAsset(outputFilename, source);
+          }
+        );
+      });
     });
   },
 });

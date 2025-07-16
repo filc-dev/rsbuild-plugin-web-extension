@@ -1,9 +1,9 @@
 import * as fs from "node:fs";
 import { resolve } from "node:path";
-import ManifestParser from "./parser.js";
 import { logger } from "@rsbuild/core";
+import ManifestParser from "./parser.js";
 
-export const makeManifest = async (
+export const makeManifest = (
   manifest: chrome.runtime.ManifestV3,
   to: string
 ) => {
@@ -15,7 +15,7 @@ export const makeManifest = async (
 
   fs.writeFileSync(
     toManifest,
-    ManifestParser.convertManifestToString(manifest)
+    ManifestParser.convertManifestToString(manifest.default || manifest)
   );
 
   logger.log("Manifest file created");
