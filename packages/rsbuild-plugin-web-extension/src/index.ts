@@ -4,6 +4,7 @@ import { makeManifest } from "./manifest/make-manifest.js";
 interface Options {
   manifest: chrome.runtime.ManifestV3;
 }
+
 export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
   name: "rsbuild:plugin-web-extension",
   setup: async (api) => {
@@ -19,10 +20,12 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
      * @issue https://github.com/web-infra-dev/rspack/issues/5971
      * @ref https://github.com/webdiscus/html-bundler-webpack-plugin
      */
-    const entry = htmlEntryPoints.reduce((acc, [name, entry]) => {
-      acc[name] = entry?.replace(/\.html$/, ".tsx");
-      return acc;
-    }, {} as Record<string, string | undefined>);
+    const entry = Object.fromEntries(
+      htmlEntryPoints.map(([name, entry]) => [
+        name,
+        entry?.replace(/\.html$/, ".tsx"),
+      ])
+    );
 
     api.modifyRspackConfig((config, { mergeConfig, HtmlPlugin }) => {
       return mergeConfig(config, {
