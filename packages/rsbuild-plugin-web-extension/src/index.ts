@@ -56,6 +56,9 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
             js: "src/[name]",
           },
         },
+        dev: {
+          writeToDisk: true
+        }
       });
     });
 
