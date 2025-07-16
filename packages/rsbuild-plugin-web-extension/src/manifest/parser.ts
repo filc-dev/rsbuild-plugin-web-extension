@@ -1,21 +1,18 @@
 type Manifest = chrome.runtime.ManifestV3;
 
-const getOutputFile = (file: string): string => {
-  return file
-    .replace(/\.(scss|stylus|sass)/g, ".css")
-    .replace(/\.(jsx|ts|tsx)/g, ".js");
-};
+const fixSuffixes = (file: string): string =>
+  file.replace(/\.(s[ca]ss|stylus)/g, ".css").replace(/\.(jsx|tsx?)/g, ".js");
 
 class ManifestParser {
   private constructor() {}
 
   static convertManifestToString(_manifest: Manifest): string {
-    let manifest = { ..._manifest };
+    let manifest = structuredClone(_manifest);
     if (process.env.__FIREFOX__) {
       manifest = ManifestParser.convertToFirefoxCompatibleManifest(manifest);
     }
 
-    return getOutputFile(JSON.stringify(manifest, null, 2));
+    return fixSuffixes(JSON.stringify(manifest, null, 2));
   }
 
   static convertToFirefoxCompatibleManifest(manifest: Manifest) {
