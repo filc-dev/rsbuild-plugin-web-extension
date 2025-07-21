@@ -46,6 +46,10 @@ export const pluginWebExtension = ({
 
     api.modifyRspackConfig((config, { mergeConfig, HtmlPlugin }) => {
       return mergeConfig(config, {
+        output: {
+          hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
+          hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
+        },
         plugins: htmlEntryPoints.map(([name, template]) => {
           return new HtmlPlugin({
             chunks: [name],
