@@ -10,6 +10,8 @@ interface Options {
 
 const pluginName = "rsbuild:plugin-web-extension";
 
+const port = +(process.env.PORT || 3130);
+
 export const pluginWebExtension = ({
   manifestPath,
 }: Options): RsbuildPlugin => ({
@@ -80,8 +82,15 @@ export const pluginWebExtension = ({
             js: "src/[name]",
           },
         },
+        server: {
+          port,
+        },
         dev: {
           writeToDisk: true,
+          client: {
+            port,
+            host: "localhost",
+          },
         },
       });
     });
