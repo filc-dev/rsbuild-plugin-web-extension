@@ -15,13 +15,14 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "rsbuild-plugin-web-extension": "0.0.10",
-    "@rsbuild/core": "^1.0.16",
+    "@rsbuild/core": "1.4.9",
     "@rsbuild/plugin-react": "^1.0.5",
     "@types/chrome": "^0.0.263",
     "@types/node": "^20.11.28",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "typescript": "^5.4.2"
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "rsbuild-plugin-web-extension": "0.0.10",
+    "tsup": "8.5.0",
+    "typescript": "5.8.3"
   }
 }

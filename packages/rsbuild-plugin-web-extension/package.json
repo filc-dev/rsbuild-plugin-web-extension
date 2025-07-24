@@ -13,7 +13,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "rsbuild",
     "plugin",
@@ -31,13 +33,10 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
-    "@rsbuild/core": "^1.0.16",
+    "@rsbuild/core": "1.4.9",
     "@types/chrome": "^0.0.263",
     "@types/node": "^20.11.30",
-    "tsup": "^8.0.2",
-    "typescript": "^5.4.2"
-  },
-  "peerDependencies": {
-    "@rsbuild/core": "1.x"
+    "tsup": "8.5.0",
+    "typescript": "5.8.3"
   }
 }
