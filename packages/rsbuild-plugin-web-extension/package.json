@@ -36,9 +36,6 @@
   },
   "license": "MIT",
   "type": "module",
-  "dependencies": {
-    "jiti": "^2.0.0"
-  },
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
     "@rsbuild/core": "1.4.9",
