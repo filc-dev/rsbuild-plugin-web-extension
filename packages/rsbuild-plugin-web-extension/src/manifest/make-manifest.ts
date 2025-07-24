@@ -15,7 +15,7 @@ export const makeManifest = async (
 
   fs.writeFileSync(
     toManifest,
-    ManifestParser.convertManifestToString(manifest.default)
+    ManifestParser.convertManifestToString(manifest)
   );
 
   logger.log("Manifest file created");
