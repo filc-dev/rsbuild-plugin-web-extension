@@ -1,32 +1,15 @@
-import * as fs from "node:fs";
-import path from "node:path";
 import { type RsbuildPlugin, rspack } from "@rsbuild/core";
-import { createJiti } from "jiti";
 import ManifestParser from "./manifest/parser.js";
 
 interface Options {
-  manifestPath: string;
+  manifest: chrome.runtime.ManifestV3;
 }
 
 const pluginName = "rsbuild:plugin-web-extension";
 
-const port = +(process.env.PORT || 3130);
-
-export const pluginWebExtension = ({
-  manifestPath,
-}: Options): RsbuildPlugin => ({
+export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
   name: pluginName,
   setup: async (api) => {
-    const jiti = createJiti(api.context.rootPath, { moduleCache: false });
-
-    const manifestSourcePath = path.resolve(api.context.rootPath, manifestPath);
-    if (!fs.existsSync(manifestSourcePath)) {
-      throw new Error(`${pluginName}: Failed to read ${manifestSourcePath}`);
-    }
-
-    const manifestModule = jiti(manifestSourcePath);
-    const manifest = manifestModule.default || manifestModule.manifest;
-
     const htmlEntryPoints = Object.entries({
       popup: manifest.action?.default_popup,
       devtools: manifest.devtools_page,
@@ -48,10 +31,6 @@ export const pluginWebExtension = ({
 
     api.modifyRspackConfig((config, { mergeConfig, HtmlPlugin }) => {
       return mergeConfig(config, {
-        output: {
-          hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
-          hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
-        },
         plugins: htmlEntryPoints.map(([name, template]) => {
           return new HtmlPlugin({
             chunks: [name],
@@ -82,15 +61,9 @@ export const pluginWebExtension = ({
             js: "src/[name]",
           },
         },
-        server: {
-          port,
-        },
+
         dev: {
           writeToDisk: true,
-          client: {
-            port,
-            host: "localhost",
-          },
         },
       });
     });
@@ -104,22 +77,16 @@ export const pluginWebExtension = ({
         compilation.hooks.processAssets.tap(
           {
             name: pluginName,
-            stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+            stage: rspack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
           },
           () => {
-            compilation.fileDependencies.add(manifestSourcePath);
-
-            const updatedManifestModule = jiti(manifestPath);
-            const manifest =
-              updatedManifestModule.default || updatedManifestModule.manifest;
             const content = ManifestParser.convertManifestToString(manifest);
 
             const { RawSource } = compiler.webpack.sources;
 
             const source = new RawSource(content);
-            const outputFilename = "manifest.json";
 
-            compilation.emitAsset(outputFilename, source);
+            compilation.emitAsset("manifest.json", source);
           }
         );
       });
