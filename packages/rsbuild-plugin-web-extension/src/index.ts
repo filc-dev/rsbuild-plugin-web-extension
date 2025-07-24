@@ -1,5 +1,5 @@
-import { type RsbuildPlugin, rspack } from "@rsbuild/core";
-import ManifestParser from "./manifest/parser.js";
+import { type RsbuildPlugin } from "@rsbuild/core";
+import { makeManifest } from "./manifest/make-manifest.js";
 
 interface Options {
   manifest: chrome.runtime.ManifestV3;
@@ -80,28 +80,8 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
       });
     });
 
-    api.onAfterCreateCompiler(({ compiler }) => {
-      if (!(compiler instanceof rspack.Compiler)) {
-        return;
-      }
-
-      compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
-        compilation.hooks.processAssets.tap(
-          {
-            name: pluginName,
-            stage: rspack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
-          },
-          () => {
-            const content = ManifestParser.convertManifestToString(manifest);
-
-            const { RawSource } = compiler.webpack.sources;
-
-            const source = new RawSource(content);
-
-            compilation.emitAsset("manifest.json", source);
-          }
-        );
-      });
+    api.onAfterBuild(() => {
+      makeManifest(manifest, api.context.distPath);
     });
   },
 });

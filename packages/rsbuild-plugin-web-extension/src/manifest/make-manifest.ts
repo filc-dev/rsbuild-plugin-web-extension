@@ -1,6 +1,5 @@
 import * as fs from "node:fs";
 import { resolve } from "node:path";
-import { logger } from "@rsbuild/core";
 import ManifestParser from "./parser.js";
 
 export const makeManifest = (
@@ -18,5 +17,5 @@ export const makeManifest = (
     ManifestParser.convertManifestToString(manifest)
   );
 
-  logger.log("Manifest file created");
+  console.log("Manifest file created");
 };

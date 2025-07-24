@@ -17,8 +17,7 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "tsup": "8.5.0",
-    "@rsbuild/core": "1.4.9",
+    "@rsbuild/core": "1.4.10",
     "typescript": "5.8.3"
   },
   "packageManager": "pnpm@10.13.1"
