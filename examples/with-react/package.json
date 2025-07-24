@@ -21,7 +21,7 @@
     "@types/node": "^20.11.28",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "rsbuild-plugin-web-extension": "0.0.10",
+    "rsbuild-plugin-web-extension": "workspace:*",
     "tsup": "8.5.0",
     "typescript": "5.8.3"
   }
