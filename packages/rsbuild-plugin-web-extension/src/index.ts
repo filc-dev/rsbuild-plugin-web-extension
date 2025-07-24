@@ -7,6 +7,8 @@ interface Options {
 
 const pluginName = "rsbuild:plugin-web-extension";
 
+const port = +(process.env.PORT || 3130);
+
 export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
   name: pluginName,
   setup: async (api) => {
@@ -31,6 +33,10 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
 
     api.modifyRspackConfig((config, { mergeConfig, HtmlPlugin }) => {
       return mergeConfig(config, {
+        output: {
+          hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js", // this points to where hmr files will be saved
+          hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json", // this points to where hmr files will be saved
+        },
         plugins: htmlEntryPoints.map(([name, template]) => {
           return new HtmlPlugin({
             chunks: [name],
@@ -61,8 +67,14 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
             js: "src/[name]",
           },
         },
-
+        server: {
+          port,
+        },
         dev: {
+          client: {
+            port,
+            host: "localhost",
+          },
           writeToDisk: true,
         },
       });
