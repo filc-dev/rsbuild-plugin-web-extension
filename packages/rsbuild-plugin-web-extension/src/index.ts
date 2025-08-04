@@ -83,5 +83,9 @@ export const pluginWebExtension = ({ manifest }: Options): RsbuildPlugin => ({
     api.onAfterCreateCompiler(() => {
       makeManifest(manifest, api.context.distPath);
     });
+
+    api.onAfterBuild(() => {
+      makeManifest(manifest, api.context.distPath);
+    });
   },
 });
