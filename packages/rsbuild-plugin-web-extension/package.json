@@ -2,7 +2,7 @@
   "name": "rsbuild-plugin-web-extension",
   "description": "rsbuild plugin for chrome/web extension",
   "homepage": "https://github.com/filc-dev/rsbuild-plugin-web-extension",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "source": "./src/index.ts",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
