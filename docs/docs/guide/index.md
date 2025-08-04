@@ -1,210 +1,221 @@
-# Markdown & MDX
+# Getting Started
 
-Rspress supports not only Markdown but also [MDX](https://mdxjs.com/), a powerful way to develop content.
+Learn how to build modern web extensions with `rsbuild-plugin-web-extension`.
 
-## Markdown
+## Installation
 
-MDX is a superset of Markdown, which means you can write Markdown files as usual. For example:
+Install the plugin using your preferred package manager:
 
-```md
-# Hello World
+::: code-group
+
+```bash [npm]
+npm install -D rsbuild-plugin-web-extension
 ```
 
-## Use Component
-
-When you want to use React components in Markdown files, you should name your files with `.mdx` extension. For example:
-
-```mdx
-// docs/index.mdx
-import { CustomComponent } from './custom';
-
-# Hello World
-
-<CustomComponent />
+```bash [pnpm]
+pnpm add -D rsbuild-plugin-web-extension
 ```
 
-## Front Matter
-
-You can add Front Matter at the beginning of your Markdown file, which is a YAML-formatted object that defines some metadata. For example:
-
-```yaml
----
-title: Hello World
----
+```bash [yarn]
+yarn add -D rsbuild-plugin-web-extension
 ```
 
-> Note: By default, Rspress uses h1 headings as html headings.
-
-You can also access properties defined in Front Matter in the body, for example:
-
-```markdown
----
-title: Hello World
----
-
-# {frontmatter.title}
-```
-
-The previously defined properties will be passed to the component as `frontmatter` properties. So the final output will be:
-
-```html
-<h1>Hello World</h1>
-```
-
-## Custom Container
-
-You can use the `:::` syntax to create custom containers and support custom titles. For example:
-
-**Input:**
-
-```markdown
-:::tip
-This is a `block` of type `tip`
 :::
 
-:::info
-This is a `block` of type `info`
-:::
+## Quick Start
 
-:::warning
-This is a `block` of type `warning`
-:::
+### 1. Create your manifest
 
-:::danger
-This is a `block` of type `danger`
-:::
+Create a `manifest.ts` file in your project root:
 
-::: details
-This is a `block` of type `details`
-:::
+```typescript title="manifest.ts"
+import { readFileSync } from "fs";
 
-:::tip Custom Title
-This is a `block` of `Custom Title`
-:::
+const packageJson = JSON.parse(readFileSync("./package.json", "utf8"));
 
-:::tip{title="Custom Title"}
-This is a `block` of `Custom Title`
-:::
-```
+const manifest: chrome.runtime.ManifestV3 = {
+  manifest_version: 3,
+  name: packageJson.name,
+  version: packageJson.version,
+  description: packageJson.description || "",
 
-**Output:**
-
-:::tip
-This is a `block` of type `tip`
-:::
-
-:::info
-This is a `block` of type `info`
-:::
-
-:::warning
-This is a `block` of type `warning`
-:::
-
-:::danger
-This is a `block` of type `danger`
-:::
-
-::: details
-This is a `block` of type `details`
-:::
-
-:::tip Custom Title
-This is a `block` of `Custom Title`
-:::
-
-:::tip{title="Custom Title"}
-This is a `block` of `Custom Title`
-:::
-
-## Code Block
-
-### Basic Usage
-
-You can use the \`\`\` syntax to create code blocks and support custom titles. For example:
-
-**Input:**
-
-````md
-```js
-console.log('Hello World');
-```
-
-```js title="hello.js"
-console.log('Hello World');
-```
-````
-
-**Output:**
-
-```js
-console.log('Hello World');
-```
-
-```js title="hello.js"
-console.log('Hello World');
-```
-
-### Show Line Numbers
-
-If you want to display line numbers, you can enable the `showLineNumbers` option in the config file:
-
-```ts title="rspress.config.ts"
-export default {
-  // ...
-  markdown: {
-    showLineNumbers: true,
+  // Define your extension's popup
+  action: {
+    default_popup: "./src/popup/index.html",
   },
-};
-```
 
-### Wrap Code
-
-If you want to wrap long code line by default, you can enable the `defaultWrapCode` option in the config file:
-
-```ts title="rspress.config.ts"
-export default {
-  // ...
-  markdown: {
-    defaultWrapCode: true,
+  // Background script (service worker)
+  background: {
+    service_worker: "./src/background/index.ts",
+    type: "module",
   },
+
+  // Optional: devtools page
+  devtools_page: "./src/devtools/index.html",
+
+  // Optional: options page
+  options_ui: {
+    page: "./src/options/index.html",
+  },
+
+  // Permissions your extension needs
+  permissions: ["storage", "activeTab"],
 };
+
+export default manifest;
 ```
 
-### Line Highlighting
+### 2. Configure Rsbuild
 
-You can also apply line highlighting and code block title at the same time, for example:
+Create or update your `rsbuild.config.ts`:
 
-**Input:**
+```typescript title="rsbuild.config.ts"
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginWebExtension } from "rsbuild-plugin-web-extension";
+import manifest from "./manifest";
 
-````md
-```js title="hello.js" {1,3-5}
-console.log('Hello World');
-
-const a = 1;
-
-console.log(a);
-
-const b = 2;
-
-console.log(b);
-```
-````
-
-**Ouput:**
-
-```js title="hello.js" {1,3-5}
-console.log('Hello World');
-
-const a = 1;
-
-console.log(a);
-
-const b = 2;
-
-console.log(b);
+export default defineConfig({
+  plugins: [
+    pluginReact(), // or pluginVue, pluginSvelte, etc.
+    pluginWebExtension({
+      manifest,
+    }),
+  ],
+});
 ```
 
-## Rustify MDX compiler
+### 3. Create your extension pages
 
-You can enable Rustify MDX compiler by following config:
+Create the HTML files and their corresponding entry points:
+
+```html title="src/popup/index.html"
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Extension Popup</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
+  </body>
+</html>
+```
+
+```tsx title="src/popup/index.tsx"
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Popup } from "./popup";
+
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(<Popup />);
+```
+
+```tsx title="src/popup/popup.tsx"
+import React, { useState } from "react";
+
+export function Popup() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div style={{ width: 300, padding: 20 }}>
+      <h1>My Extension</h1>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+### 4. Background script
+
+```typescript title="src/background/index.ts"
+// Background service worker
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("Extension installed!");
+});
+
+// Example: handle messages from content scripts or popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "GET_DATA") {
+    // Handle the message
+    sendResponse({ data: "Hello from background!" });
+  }
+});
+```
+
+### 5. Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+This will:
+
+- Start Rsbuild dev server with hot reload
+- Generate the manifest.json automatically
+- Watch for changes and rebuild
+
+### 6. Load in browser
+
+#### Chrome
+
+1. Open `chrome://extensions`
+2. Enable "Developer mode"
+3. Click "Load unpacked"
+4. Select your `dist` folder
+
+#### Firefox
+
+For Firefox development, use:
+
+```bash
+npm run dev:firefox
+```
+
+Then:
+
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click "Load Temporary Add-on..."
+3. Select any file in your `dist` folder
+
+## Project Structure
+
+Here's a typical project structure:
+
+```
+my-extension/
+├── src/
+│   ├── popup/
+│   │   ├── index.html
+│   │   ├── index.tsx
+│   │   └── popup.tsx
+│   ├── background/
+│   │   └── index.ts
+│   ├── devtools/
+│   │   ├── index.html
+│   │   └── index.tsx
+│   └── options/
+│       ├── index.html
+│       └── index.tsx
+├── manifest.ts
+├── rsbuild.config.ts
+└── package.json
+```
+
+## Next Steps
+
+- [Configuration](/guide/configuration) - Learn about all available options
+- [Manifest Reference](/guide/manifest) - Detailed manifest configuration
+- [Multi-browser Support](/guide/multi-browser) - Chrome and Firefox differences
+- [Examples](/guide/examples) - See complete examples
+
+## Need Help?
+
+- Check our [FAQ](/guide/faq)
+- Browse [Examples](https://github.com/filc-dev/rsbuild-plugin-web-extension/tree/main/examples)
+- Open an [issue](https://github.com/filc-dev/rsbuild-plugin-web-extension/issues)

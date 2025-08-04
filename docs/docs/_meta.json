@@ -5,7 +5,7 @@
     "activeMatch": "/guide/"
   },
   {
-    "text": "API",
-    "link": "https://rspress.dev/api/index.html"
+    "text": "Examples",
+    "link": "https://github.com/filc-dev/rsbuild-plugin-web-extension/tree/main/examples"
   }
 ]
